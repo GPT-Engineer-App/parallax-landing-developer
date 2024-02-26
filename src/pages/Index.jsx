@@ -1,7 +1,17 @@
-import { Box, Flex, Heading, Text, Image, VStack, Container, Divider, Link } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, VStack, Container, Divider, Link, useDisclosure } from "@chakra-ui/react";
 import { FaHtml5, FaCss3Alt, FaJsSquare } from "react-icons/fa";
+import ParallaxSection from "../components/ParallaxSection";
+import { useState, useEffect } from "react";
 
 const Index = () => {
+  const [offsetY, setOffsetY] = useState(0);
+  const handleScroll = () => setOffsetY(window.pageYOffset);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <VStack spacing={8}>
       {/* Hero Section */}
@@ -58,9 +68,18 @@ const Index = () => {
 
         <Divider my={8} />
 
-        {/* Parallax Section - Placeholder for Parallax Effect */}
-        {/* Note: Actual parallax effect would require JavaScript and CSS not provided by Chakra UI */}
-        <Box w="full" h="300px" bgImage="https://images.unsplash.com/photo-1532630571098-79a3d222b00d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHxwYXJhbGxheCUyMHBsYWNlaG9sZGVyfGVufDB8fHx8MTcwODk4MzE0OHww&ixlib=rb-4.0.3&q=80&w=1080" bgPosition="center" bgRepeat="no-repeat" bgSize="cover" my={8} />
+        {/* Parallax Section with Fade Effect */}
+        <ParallaxSection image="https://images.unsplash.com/photo-1532630571098-79a3d222b00d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w1MDcxMzJ8MHwxfHNlYXJjaHwxfHxwYXJhbGxheCUyMHBsYWNlaG9sZGVyfGVufDB8fHx8MTcwODk4MzE0OHww&ixlib=rb-4.0.3&q=80&w=1080">
+          {/* Content to fade in and out */}
+          <VStack spacing={4} position="relative" textAlign="center" justify="center" align="center" h="full">
+            <Heading as="h2" size="xl" color="white" style={{ opacity: offsetY < 200 ? 1 - (200 - offsetY) / 100 : 1 }}>
+              Engaging Experiences
+            </Heading>
+            <Text fontSize="xl" color="whiteAlpha.800" style={{ opacity: offsetY < 250 ? 1 - (250 - offsetY) / 100 : 1 }}>
+              Scroll down to see more
+            </Text>
+          </VStack>
+        </ParallaxSection>
 
         <VStack spacing={4}>
           {/* Customization Section */}
